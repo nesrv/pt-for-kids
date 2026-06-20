@@ -1,5 +1,6 @@
-# Шаг 3: Управление с клавиатуры
+# Шаг 4: Появление яблок
 import pygame
+import random
 
 pygame.init()
 
@@ -7,16 +8,28 @@ WIDTH, HEIGHT = 600, 400
 CELL = 20
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Змейка — шаг 3")
+pygame.display.set_caption("Змейка — шаг 4")
 
 clock = pygame.time.Clock()
 
 snake = [(WIDTH // 2, HEIGHT // 2)]
-direction = (CELL, 0)  # вправо
+direction = (CELL, 0)
 
-# Каждые 150 мс — один шаг змейки
 STEP = pygame.USEREVENT
-pygame.time.set_timer(STEP, 150)
+pygame.time.set_timer(STEP, 350)
+
+
+def spawn_apple():
+    """Ставит яблоко в случайную клетку, где нет змейки."""
+    while True:
+        # случайная клетка по X и Y, переводим в пиксели
+        x = random.randint(0, (WIDTH - CELL) // CELL) * CELL
+        y = random.randint(0, (HEIGHT - CELL) // CELL) * CELL
+        if (x, y) not in snake:
+            return (x, y)
+
+
+apple = spawn_apple()
 
 running = True
 while running:
@@ -43,6 +56,9 @@ while running:
 
     for x, y in snake:
         pygame.draw.rect(screen, (0, 255, 0), (x, y, CELL, CELL))
+
+    # красный квадрат — яблоко
+    pygame.draw.rect(screen, (255, 0, 0), (*apple, CELL, CELL))
 
     pygame.display.flip()
     clock.tick(60)

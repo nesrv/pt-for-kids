@@ -11,14 +11,14 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Змейка — шаг 5")
 
 clock = pygame.time.Clock()
-font = pygame.font.SysFont("arial", 28)
+font = pygame.font.SysFont("arial", 28)  # шрифт для надписи «Игра окончена»
 
 snake = [(WIDTH // 2, HEIGHT // 2)]
 direction = (CELL, 0)
-game_over = False
+game_over = False  # True — игра закончилась, змейка больше не двигается
 
 STEP = pygame.USEREVENT
-pygame.time.set_timer(STEP, 150)
+pygame.time.set_timer(STEP, 350)
 
 
 def spawn_apple():
@@ -37,6 +37,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        # пока не проиграли — принимаем управление
         if not game_over and event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP and direction != (0, CELL):
                 direction = (0, -CELL)
@@ -51,7 +52,7 @@ while running:
             head_x, head_y = snake[0]
             new_head = (head_x + direction[0], head_y + direction[1])
 
-            # Удар о стену
+            # удар о стену — голова за пределами окна
             if (
                 new_head[0] < 0
                 or new_head[0] >= WIDTH
@@ -60,14 +61,15 @@ while running:
             ):
                 game_over = True
 
-            # Удар о себя
+            # удар о себя — голова попала на своё тело
             elif new_head in snake:
                 game_over = True
 
             else:
-                snake.insert(0, new_head)
+                snake.insert(0, new_head)  # новая голова в начало списка
 
                 if new_head == apple:
+                    # съели яблоко — хвост не убираем, змейка растёт
                     apple = spawn_apple()
                 else:
                     snake.pop()  # убираем хвост — змейка «ползёт»

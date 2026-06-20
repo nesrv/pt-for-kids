@@ -4,14 +4,14 @@ import pygame
 pygame.init()
 
 WIDTH, HEIGHT = 600, 400
-CELL = 20  # размер одной клетки
+CELL = 20  # размер одной клетки (квадратика)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Змейка — шаг 2")
 
 clock = pygame.time.Clock()
 
-# Список частей змейки: пока только голова (x, y)
+# snake — список координат частей змейки; пока только голова (x, y)
 snake = [(WIDTH // 2, HEIGHT // 2)]
 
 running = True
@@ -22,7 +22,7 @@ while running:
 
     screen.fill((0, 0, 0))
 
-    # Рисуем каждый сегмент змейки
+    # рисуем каждый сегмент зелёным квадратом
     for x, y in snake:
         pygame.draw.rect(screen, (0, 255, 0), (x, y, CELL, CELL))
 
